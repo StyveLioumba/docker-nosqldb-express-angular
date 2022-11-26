@@ -7,7 +7,7 @@
 docker-compose up --build
 ```
 
-- Go to cassandra container
+- Wait until all container start and in another shell go to cassandra container
 
 ```bash
 docker exec -it dbCassandra sh
