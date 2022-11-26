@@ -1,0 +1,5 @@
+<section class="container mx-auto flex-1 grid grid-cols-3 gap-4 my-5">
+    <app-deck-model *ngFor="let deck of decks | paginate: { itemsPerPage: 12, currentPage: p ,totalItems:totalCards}" [deck]=deck (isDelete)="isDeleted($event)"></app-deck-model>
+</section>
+
+<pagination-controls previousLabel="Précedent" nextLabel="Suivant" (pageChange)="p = $event" class="text-center my-5"></pagination-controls>

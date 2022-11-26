@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  web:
+    build: ./myapp/
+    container_name: myapp
+    ports:
+      - 80:80
+    volumes:
+      - ./myapp:/app
+    depends_on:
+      - api
+
+  cassandra:
+    build: ./cassandra/
+    container_name: dbCassandra
+    volumes:
+      - ./cassandra/data.cql:/scripts/data.cql
+    ports:
+      - 9042:9042
+    environment:
+      - CASSANDRA_LOCAL_DC=datacenter1
+  
+  cache:
+    image: redis:6.2-alpine
+    container_name: cache 
+    restart: unless-stopped
+    ports:
+      - 6379:6379
+    depends_on:
+      - cassandra
+
+  api:
+    build: ./api/
+    container_name: nodealpine
+    restart: unless-stopped
+    ports:
+      - 3000:3000
+    depends_on:
+      - cache
+    environment:
+      - REDIS_HOST=0.0.0.0
+    volumes:
+      - ./api/app.js:/usr/src/app/app.js
+      - ./api/package.json:/usr/src/app/package.json
