@@ -37,7 +37,7 @@ services:
   api:
     build: 
       context: ./.
-      dockerfile: Dockerfile
+      dockerfile: node.Dockerfile
     container_name: nodealpine
     restart: unless-stopped
     ports:
