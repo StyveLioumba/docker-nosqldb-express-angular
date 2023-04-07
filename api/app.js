@@ -48,10 +48,6 @@ app.get('/', async(req, res) => {
   try {
     const response = await axios.get(baseURL);
 
-    const shuffled = response.data.sort(() => Math.random() - 0.5);
-
-    console.log(shuffled);
-
     console.log('is loading from API');
     await clientRedis.set('data', JSON.stringify(response.data));
 
