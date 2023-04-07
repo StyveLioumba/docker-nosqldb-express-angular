@@ -1,7 +1,7 @@
 FROM node:alpine
 # Create app directory
 WORKDIR /usr/src/app
-COPY package.json ./
+COPY ./api/package.json ./
 RUN npm install
-COPY . .
+COPY ./api/. .
 CMD ["npm","run","start:dev"]
