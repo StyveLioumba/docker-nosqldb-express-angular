@@ -3,8 +3,8 @@ version: '3.9'
 services:
   web:
     build: 
-      context: ./myapp/
-      dockerfile: Dockerfile
+      context: ./.
+      dockerfile: ang.Dockerfile
     container_name: myapp
     ports:
       - 80:80
@@ -15,8 +15,8 @@ services:
 
   cassandra:
     build: 
-      context: ./cassandra/
-      dockerfile: Dockerfile
+      context: ./.
+      dockerfile: cass.Dockerfile
     container_name: dbCassandra
     volumes:
       - ./cassandra/data.cql:/scripts/data.cql

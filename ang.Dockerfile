@@ -1,7 +1,7 @@
 # Stage 1
 FROM node:14-alpine as node
 WORKDIR /app
-COPY . .
+COPY ./myapp/. .
 RUN npm install && npm run build 
 
 # Stage 2
