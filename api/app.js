@@ -2,7 +2,6 @@ import ip from 'ip';
 import axios from 'axios';
 import express from 'express';
 import redis from 'redis';
-import cassandra from 'cassandra-driver';
 import cors from 'cors';
 
 const app = express();
@@ -15,13 +14,6 @@ const baseURL = 'https://db.ygoprodeck.com/api/v7/cardinfo.php';
 const clientRedis = redis.createClient({
   url: `redis://cache:${REDIS_PORT}`,
 });
-
-const clientCassandra = new cassandra.Client({ 
-  contactPoints: ['dbCassandra'],
-  localDataCenter: 'datacenter1',
-  keyspace: 'ygoprodeck',
-});
-
 
 clientRedis.connect().then(() => {
   console.log(`Connected to Redis on ${REDIS_PORT}`);
@@ -58,63 +50,6 @@ app.get('/', async(req, res) => {
     console.error(error);
   }
   
-});
-
-app.get('/deck', async(req, res) => {
-
-  clientCassandra.connect().then(() => {
-
-    const query = 'SELECT * FROM ygoprodeck.deck';
-
-    clientCassandra.execute(query)
-    .then(async (result) => {
-        res.status(200).json({data:result.rows});
-      });
-
-  }).catch((err) => {
-    console.log('Error connecting to Cassandra', err);
-  });
-
-});
-
-app.post('/deck', async(req, res) => {
-
-  clientCassandra.connect().then( () => {
-
-    const query = 'INSERT into ygoprodeck.deck (userid, image_url,name,last_update_timestamp) VALUES (?, ?, ?, ?)';
-
-    const params = [req.body.userid,req.body.image_url,req.body.name, Date.now()];
-    
-    clientCassandra.execute(query, params, { prepare: true })
-    .then(result => {
-      console.log(result);
-      res.status(200).json({data:{message:"added"}});
-    });
-
-  }).catch((err) => {
-    console.log('Error connecting to Cassandra', err);
-  });
-
-});
-
-app.delete('/deck/:id', async(req, res) => {
-
-  clientCassandra.connect().then( () => {
-
-    const query = 'DELETE FROM ygoprodeck.deck WHERE userid = ?';
-
-    const params = [req.params.id];
-    
-    clientCassandra.execute(query, params, { prepare: true })
-    .then(result => {
-      console.log(result);
-      res.status(200).json({data:{message:"deleted"}});
-    });
-
-  }).catch((err) => {
-    console.log('Error connecting to Cassandra', err);
-  });
-
 });
 
 app.listen(PORT, () => {

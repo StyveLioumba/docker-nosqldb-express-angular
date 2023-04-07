@@ -12,18 +12,6 @@ services:
       - ./myapp:/app
     depends_on:
       - api
-
-  cassandra:
-    build: 
-      context: ./.
-      dockerfile: cass.Dockerfile
-    container_name: dbCassandra
-    volumes:
-      - ./cassandra/data.cql:/scripts/data.cql
-    ports:
-      - 9042:9042
-    environment:
-      - CASSANDRA_LOCAL_DC=datacenter1
   
   cache:
     image: redis:6.2-alpine
@@ -31,8 +19,6 @@ services:
     restart: unless-stopped
     ports:
       - 6379:6379
-    depends_on:
-      - cassandra
 
   api:
     build: 
