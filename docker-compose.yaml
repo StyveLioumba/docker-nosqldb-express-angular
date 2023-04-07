@@ -3,7 +3,7 @@ version: '3.9'
 services:
   web:
     build: 
-      context: ./myapp/
+      context: myapp/
       dockerfile: Dockerfile
     container_name: myapp
     ports:
@@ -15,7 +15,7 @@ services:
 
   cassandra:
     build: 
-      context: ./cassandra/
+      context: cassandra/
       dockerfile: Dockerfile
     container_name: dbCassandra
     volumes:
@@ -36,7 +36,7 @@ services:
 
   api:
     build: 
-      context: ./api/
+      context: api/
       dockerfile: Dockerfile
     container_name: nodealpine
     restart: unless-stopped
