@@ -4,7 +4,7 @@ services:
   web:
     build: 
       context: ./.
-      dockerfile: ang.Dockerfile
+      dockerfile: Dockerfile
     container_name: myapp
     ports:
       - 80:80
@@ -23,7 +23,7 @@ services:
   api:
     build: 
       context: ./.
-      dockerfile: node.Dockerfile
+      dockerfile: Dockerfile
     container_name: nodealpine
     restart: unless-stopped
     ports:
